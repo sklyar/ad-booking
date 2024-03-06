@@ -1,0 +1,5 @@
+server:
+  port: 7123
+
+database:
+  dsn: postgres://test_user:test_password@127.0.0.1:16000/template?sslmode=disable
