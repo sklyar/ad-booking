@@ -1,8 +1,9 @@
 package person
 
 import (
-	"github.com/sklyar/ad-booking/backend/internal/entity"
 	"time"
+
+	"github.com/sklyar/ad-booking/backend/internal/entity"
 )
 
 type model struct {

@@ -3,9 +3,11 @@ package person
 import (
 	"context"
 	"fmt"
+	"time"
+
 	sq "github.com/Masterminds/squirrel"
 	"github.com/sklyar/ad-booking/backend/internal/entity"
-	"github.com/sklyar/ad-booking/backend/internal/infrastructure/db"
+	"github.com/sklyar/ad-booking/backend/internal/infrastructure/database"
 	"github.com/sklyar/ad-booking/backend/internal/repository"
 )
 
@@ -17,21 +19,23 @@ var (
 )
 
 type Storage struct {
-	db         db.Handler
+	db         database.Handler
 	sqlBuilder sq.StatementBuilderType
-	fetcher    *db.Fetcher[entity.ContactPerson, model]
+	fetcher    *database.Fetcher[entity.ContactPerson, model]
 }
 
-func New(dbHandler db.Handler) *Storage {
+func New(dbHandler database.Handler) *Storage {
 	return &Storage{
 		db:         dbHandler,
 		sqlBuilder: sq.StatementBuilder.PlaceholderFormat(sq.Dollar),
-		fetcher:    db.NewFetcher[entity.ContactPerson, model](dbHandler, scan),
+		fetcher:    database.NewFetcher[entity.ContactPerson, model](dbHandler, scan),
 	}
 }
 
 func (s *Storage) Create(ctx context.Context, person *entity.ContactPerson) error {
 	m := newModel(person)
+	m.CreatedAt = time.Now()
+	m.UpdateAt = m.CreatedAt
 
 	query, args, err := s.sqlBuilder.
 		Insert(tableName).
@@ -115,7 +119,7 @@ func (s *Storage) selectBuilder() sq.SelectBuilder {
 		Where(sq.Eq{"deleted_at": nil})
 }
 
-func scan(row db.Row, item *model) error {
+func scan(row database.Row, item *model) error {
 	return row.Scan(
 		&item.ID,
 		&item.Name,

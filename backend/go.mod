@@ -8,6 +8,8 @@ require (
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/cristalhq/aconfig v0.18.5
 	github.com/cristalhq/aconfig/aconfigyaml v0.17.1
+	github.com/google/go-cmp v0.5.9
+	github.com/google/uuid v1.5.0
 	github.com/jackc/pgx/v5 v5.5.1
 	github.com/sklyar/go-transact v0.2.1
 	github.com/stretchr/testify v1.8.4
@@ -18,10 +20,13 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20231201235250-de7065d80cb9 // indirect
+	github.com/jackc/pgx v3.6.2+incompatible // indirect
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
 	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
+	github.com/mcosta74/pgx-slog v0.3.0 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	golang.org/x/crypto v0.19.0 // indirect

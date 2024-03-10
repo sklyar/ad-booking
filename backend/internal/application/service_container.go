@@ -2,14 +2,17 @@ package application
 
 import (
 	"github.com/sklyar/ad-booking/backend/internal/service"
+	"github.com/sklyar/ad-booking/backend/internal/service/person"
 )
 
+// ServiceContainer is a container for services.
 type ServiceContainer struct {
-	ContactPersonService service.Person
+	PersonService service.Person
 }
 
+// NewServiceContainer creates a new service container.
 func newServiceContainer(repositoryContainer *RepositoryContainer) *ServiceContainer {
 	return &ServiceContainer{
-		ContactPersonService: contactperson.New(repositoryContainer.ContactPersonRepository),
+		PersonService: person.New(repositoryContainer.ContactPersonRepository),
 	}
 }

@@ -1,5 +1,9 @@
+logger:
+  level: error
+
 server:
   port: 7123
 
 database:
   dsn: postgres://dev_user:dev_password@127.0.0.1:16000/booking?sslmode=disable
+  #  log_level: error # error, warn, info, debug. default: error

@@ -1,8 +1,9 @@
 package person
 
 import (
-	"connectrpc.com/connect"
 	"context"
+
+	"connectrpc.com/connect"
 	"github.com/sklyar/ad-booking/backend/api/gen/contactperson"
 	"github.com/sklyar/ad-booking/backend/api/gen/contactperson/contactpersonconnect"
 	"github.com/sklyar/ad-booking/backend/internal/service"

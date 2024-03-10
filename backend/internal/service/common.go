@@ -4,7 +4,6 @@ import "errors"
 
 var (
 	ErrInvalidOrderDirection = errors.New("invalid order direction")
-	ErrInvalidOrderByField   = errors.New("invalid order by field")
 	ErrRequiredLimit         = errors.New("required limit")
 )
 
@@ -41,20 +40,9 @@ type OrderBy struct {
 	Direction OrderDirection
 }
 
-func (o OrderBy) Validate(allowedFields []string) error {
+func (o OrderBy) Validate() error {
 	if !o.Direction.validate() {
 		return ErrInvalidOrderDirection
-	}
-
-	var found bool
-	for _, field := range allowedFields {
-		if field == o.Field {
-			found = true
-			break
-		}
-	}
-	if !found {
-		return ErrInvalidOrderByField
 	}
 
 	return nil

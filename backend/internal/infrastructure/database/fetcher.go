@@ -1,10 +1,11 @@
-package db
+package database
 
 import (
 	"context"
 	"database/sql"
 	"errors"
 	"fmt"
+
 	sq "github.com/Masterminds/squirrel"
 	"github.com/sklyar/go-transact/txsql"
 )

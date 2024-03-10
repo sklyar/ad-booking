@@ -6,3 +6,6 @@ plugins:
   - plugin: connect-go
     out: api/gen
     opt: paths=source_relative
+  - plugin: buf.build/community/mfridman-go-json:v1.2.0
+    out: api/gen
+    opt: paths=source_relative

@@ -3,8 +3,9 @@ package repository
 import (
 	"context"
 	"fmt"
-	"github.com/sklyar/ad-booking/backend/internal/entity"
 	"time"
+
+	"github.com/sklyar/ad-booking/backend/internal/entity"
 )
 
 // ContactPerson is an interface for contact person repository.
@@ -22,10 +23,6 @@ type ContactPersonFilter struct {
 }
 
 func (f ContactPersonFilter) Validate(allowedFields []string) error {
-	if err := f.Pagination.Validate(); err != nil {
-		return fmt.Errorf("pagination: %w", err)
-	}
-
 	if err := f.OrderBy.Validate(allowedFields); err != nil {
 		return fmt.Errorf("order by: %w", err)
 	}

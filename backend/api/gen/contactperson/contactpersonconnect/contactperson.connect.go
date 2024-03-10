@@ -5,12 +5,13 @@
 package contactpersonconnect
 
 import (
-	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	contactperson "github.com/sklyar/ad-booking/backend/api/gen/contactperson"
 	http "net/http"
 	strings "strings"
+
+	connect "connectrpc.com/connect"
+	contactperson "github.com/sklyar/ad-booking/backend/api/gen/contactperson"
 )
 
 // This is a compile-time assertion to ensure that this generated file and the connect package are

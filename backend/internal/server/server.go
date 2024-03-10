@@ -2,12 +2,13 @@ package server
 
 import (
 	"context"
-	"github.com/sklyar/ad-booking/backend/api/gen/contactperson/contactpersonconnect"
-	"github.com/sklyar/ad-booking/backend/internal/server/person"
-	"github.com/sklyar/ad-booking/backend/internal/service"
 	"log/slog"
 	"net"
 	"net/http"
+
+	"github.com/sklyar/ad-booking/backend/api/gen/contactperson/contactpersonconnect"
+	"github.com/sklyar/ad-booking/backend/internal/server/handler/person"
+	"github.com/sklyar/ad-booking/backend/internal/service"
 )
 
 type Server struct {
@@ -22,6 +23,7 @@ func New(
 	contactPersonService service.Person,
 ) *Server {
 	mux := http.NewServeMux()
+	mux.HandleFunc("/health", healthHandler)
 	mount := func(path string, handler http.Handler) {
 		mux.Handle(path, handler)
 	}
@@ -53,3 +55,5 @@ func (s *Server) Run(ctx context.Context) error {
 
 	return srv.Serve(s.ln)
 }
+
+func healthHandler(_ http.ResponseWriter, _ *http.Request) {}
