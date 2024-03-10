@@ -2,62 +2,92 @@ package application
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
-	_ "github.com/jackc/pgx/v5/stdlib"
-	"github.com/sklyar/ad-booking/backend/internal/application/config"
-	"github.com/sklyar/ad-booking/backend/internal/server"
-	"github.com/sklyar/go-transact"
-	"github.com/sklyar/go-transact/adapters/transactstd"
-	"github.com/sklyar/go-transact/txsql"
 	"log/slog"
+	"net"
+	"os"
+
+	"github.com/sklyar/ad-booking/backend/internal/application/config"
+	"github.com/sklyar/ad-booking/backend/internal/infrastructure/database"
+	"github.com/sklyar/ad-booking/backend/internal/server"
 )
 
-type App struct {
-	logger     *slog.Logger
-	httpServer *server.Server
+type AppOption func(app *App)
+
+func WithLogger(logger *slog.Logger) AppOption {
+	return func(app *App) {
+		app.logger = logger
+	}
 }
 
-func Bootstrap(ctx context.Context, logger *slog.Logger, cfgFile string) (*App, error) {
-	cfg, err := config.New(cfgFile)
-	if err != nil {
-		return nil, fmt.Errorf("load config: %w", err)
+func WithDB(db *database.Database) AppOption {
+	return func(app *App) {
+		app.db = db
+	}
+}
+
+func WithServerListener(ln net.Listener) AppOption {
+	return func(app *App) {
+		app.httpServerListener = ln
+	}
+}
+
+type App struct {
+	db *database.Database
+
+	logger             *slog.Logger
+	httpServer         *server.Server
+	httpServerListener net.Listener
+}
+
+func Bootstrap(ctx context.Context, cfg *config.Config, opts ...AppOption) (*App, error) {
+	var app App
+	for _, opt := range opts {
+		opt(&app)
 	}
 
-	httpServer := server.New(logger, cfg.Server.Addr())
-
-	txManager, db, err := initDB(ctx, cfg.Database)
-	if err != nil {
-		return nil, fmt.Errorf("init db: %w", err)
+	logger := app.logger
+	if logger == nil {
+		var level slog.Level
+		if err := level.UnmarshalText([]byte(cfg.Logger.Level)); err != nil {
+			return nil, fmt.Errorf("parse log level: %w", err)
+		}
+		opts := &slog.HandlerOptions{
+			Level: level,
+		}
+		logger = slog.New(slog.NewTextHandler(os.Stdout, opts))
 	}
 
-	_ = txManager
-	_ = db
+	if app.db == nil {
+		var err error
+		dbConfig := database.Config{
+			DSN:      cfg.Database.DSN,
+			Logger:   logger,
+			LogLevel: cfg.Database.LogLevel,
+		}
+		app.db, err = database.New(ctx, dbConfig)
+		if err != nil {
+			return nil, fmt.Errorf("init Database: %w", err)
+		}
+	}
+
+	repoContainer := newRepositoryContainer(app.db.Handler)
+	serviceContainer := newServiceContainer(repoContainer)
+
+	if app.httpServerListener == nil {
+		ln, err := net.Listen("tcp", cfg.Server.Addr())
+		if err != nil {
+			return nil, fmt.Errorf("listen: %w", err)
+		}
+		app.httpServerListener = ln
+	}
 
 	return &App{
 		logger:     logger,
-		httpServer: httpServer,
+		httpServer: server.New(logger, app.httpServerListener, serviceContainer.PersonService),
 	}, nil
 }
 
 func (a *App) Run(ctx context.Context) error {
 	return a.httpServer.Run(ctx)
-}
-
-func initDB(ctx context.Context, dbConfig config.Database) (*transact.Manager, txsql.DB, error) {
-	sqlDB, err := sql.Open("pgx", dbConfig.DSN)
-	if err != nil {
-		return nil, nil, fmt.Errorf("open database: %w", err)
-	}
-
-	manager, db, err := transact.NewManager(transactstd.Wrap(sqlDB))
-	if err != nil {
-		return nil, nil, fmt.Errorf("create transaction manager: %w", err)
-	}
-
-	if err := db.Ping(ctx); err != nil {
-		return nil, nil, fmt.Errorf("ping database: %w", err)
-	}
-
-	return manager, db, nil
 }

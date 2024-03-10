@@ -6,23 +6,26 @@ services:
     container_name: booking_test_postgres
     command:
       - '-c'
-      - 'config_file=/etc/postgresql/postgresql.conf'
-      - '-c'
       - 'fsync=off'
       - '-c'
       - 'synchronous_commit=off'
       - '-c'
       - 'full_page_writes=off'
     environment:
-      POSTGRES_DB: testdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: template
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
     ports:
-      - "15000:5432"
+      - "16000:5432"
     networks:
       - booking_test_network
     tmpfs:
       - /var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready --username 'postgres' --dbname 'postgres'" ]
+      interval: 1s
+      retries: 5
+      timeout: 5s
 
 networks:
   booking_test_network:
