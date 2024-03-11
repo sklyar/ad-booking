@@ -6,7 +6,8 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/sklyar/ad-booking/backend/api/gen/contactperson/contactpersonconnect"
+	"github.com/sklyar/ad-booking/backend/api/gen/booking/bookingconnect"
+
 	"github.com/sklyar/ad-booking/backend/internal/server/handler/person"
 	"github.com/sklyar/ad-booking/backend/internal/service"
 )
@@ -29,7 +30,7 @@ func New(
 	}
 
 	contactPersonHandler := person.New(contactPersonService)
-	mount(contactpersonconnect.NewServiceHandler(contactPersonHandler))
+	mount(bookingconnect.NewContactPersonServiceHandler(contactPersonHandler))
 
 	return &Server{
 		ln:     ln,

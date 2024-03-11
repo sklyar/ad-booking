@@ -1,0 +1,10 @@
+{
+  "pagination": {
+    "last_id": 5,
+    "limit": 3
+  },
+  "sorting": {
+    "direction": 2,
+    "field": "id"
+  }
+}

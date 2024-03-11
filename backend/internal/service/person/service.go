@@ -32,3 +32,27 @@ func (s *Service) Create(ctx context.Context, data service.PersonCreate) (*entit
 
 	return person, nil
 }
+
+func (s *Service) Filter(ctx context.Context, filter service.PersonFilter) ([]entity.ContactPerson, error) {
+	if err := filter.Validate(); err != nil {
+		return nil, fmt.Errorf("validate filter: %w", err)
+	}
+
+	persons, err := s.repo.Filter(ctx, repository.ContactPersonFilter{
+		Pagination: repository.Pagination{
+			LastID: filter.Pagination.LastID,
+			Limit:  filter.Pagination.Limit,
+		},
+		Sorting: repository.Sorting{
+			Field:     filter.Sorting.Field,
+			Direction: repository.OrderDirection(filter.Sorting.Direction),
+		},
+		Name: filter.Name,
+		VKID: filter.VKID,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("fetch persons: %w", err)
+	}
+
+	return persons, nil
+}

@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": "4",
+      "name": "person-4",
+      "vkId": "vk-id-4",
+      "createdAt": "2021-01-01T00:00:00Z",
+      "updatedAt": "2021-01-01T00:00:00Z"
+    },
+    {
+      "id": "3",
+      "name": "person-3",
+      "vkId": "vk-id-3",
+      "createdAt": "2021-01-01T00:00:00Z",
+      "updatedAt": "2021-01-01T00:00:00Z"
+    },
+    {
+      "id": "2",
+      "name": "person-2",
+      "vkId": "vk-id-2",
+      "createdAt": "2021-01-01T00:00:00Z",
+      "updatedAt": "2021-01-01T00:00:00Z"
+    }
+  ]
+}

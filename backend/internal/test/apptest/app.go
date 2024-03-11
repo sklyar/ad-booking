@@ -25,7 +25,7 @@ const logLevel = slog.LevelError
 
 // Suite represents a test suite that includes the application instance and the HTTP client.
 type Suite struct {
-	app *application.App
+	App *application.App
 
 	serverBaseURL string
 	client        *http.Client
@@ -64,7 +64,7 @@ func NewSuite(t *testing.T, ctx context.Context) *Suite {
 	}()
 
 	s := &Suite{
-		app:           app,
+		App:           app,
 		serverBaseURL: serverURL(t, serverListener),
 		client:        http.DefaultClient,
 	}
