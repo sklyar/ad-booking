@@ -4,9 +4,10 @@ import (
 	"context"
 	"testing"
 
+	"github.com/sklyar/ad-booking/backend/api/gen/booking"
+	"github.com/sklyar/ad-booking/backend/api/gen/booking/bookingconnect"
+
 	"connectrpc.com/connect"
-	"github.com/sklyar/ad-booking/backend/api/gen/contactperson"
-	"github.com/sklyar/ad-booking/backend/api/gen/contactperson/contactpersonconnect"
 	"github.com/sklyar/ad-booking/backend/internal/test"
 	"github.com/sklyar/ad-booking/backend/internal/test/apptest"
 	"github.com/stretchr/testify/assert"
@@ -14,13 +15,15 @@ import (
 )
 
 func TestHandler_Create(t *testing.T) {
+	t.Parallel()
+
 	ctx := context.Background()
 	suite := apptest.NewSuite(t, ctx)
 
-	req := new(contactperson.CreateRequest)
+	req := new(booking.CreatePersonRequest)
 	test.ReadProtoFixture(t, "create/req.json", req)
 
-	client := apptest.NewGRPCClient(suite, contactpersonconnect.NewServiceClient)
+	client := apptest.NewGRPCClient(suite, bookingconnect.NewContactPersonServiceClient)
 	resp, err := client.Create(ctx, connect.NewRequest(req))
 	require.NoError(t, err)
 

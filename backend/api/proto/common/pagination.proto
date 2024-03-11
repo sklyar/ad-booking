@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package common;
+
+import "buf/validate/validate.proto";
+
+option go_package = "github.com/sklyar/ad-booking/backend/api/gen/common";
+
+message Pagination {
+  uint64 last_id = 1;
+  int64 limit = 2 [(buf.validate.field).required = true];
+}

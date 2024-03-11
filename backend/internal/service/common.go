@@ -7,13 +7,17 @@ var (
 	ErrRequiredLimit         = errors.New("required limit")
 )
 
+// OrderDirection is a type for sorting direction.
 type OrderDirection string
 
+// OrderDirection values.
 const (
-	OrderDirectionAsc  OrderDirection = "ASC"
-	OrderDirectionDesc OrderDirection = "DESC"
+	OrderDirectionUnspecified OrderDirection = ""
+	OrderDirectionAsc         OrderDirection = "ASC"
+	OrderDirectionDesc        OrderDirection = "DESC"
 )
 
+// Validate checks if the order direction is valid.
 func (d OrderDirection) validate() bool {
 	switch d {
 	case OrderDirectionAsc, OrderDirectionDesc:
@@ -22,11 +26,13 @@ func (d OrderDirection) validate() bool {
 	return false
 }
 
+// Pagination is a dto for pagination.
 type Pagination struct {
-	Limit  uint64
-	Offset uint64
+	LastID uint64
+	Limit  int64
 }
 
+// Validate checks if the pagination is valid.
 func (p Pagination) Validate() error {
 	if p.Limit == 0 {
 		return ErrRequiredLimit
@@ -35,12 +41,14 @@ func (p Pagination) Validate() error {
 	return nil
 }
 
-type OrderBy struct {
+// Sorting is a dto for sorting.
+type Sorting struct {
 	Field     string
 	Direction OrderDirection
 }
 
-func (o OrderBy) Validate() error {
+// Validate checks if the sorting is valid.
+func (o Sorting) Validate() error {
 	if !o.Direction.validate() {
 		return ErrInvalidOrderDirection
 	}

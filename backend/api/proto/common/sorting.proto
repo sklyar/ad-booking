@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package common;
+
+import "buf/validate/validate.proto";
+
+option go_package = "github.com/sklyar/ad-booking/backend/api/gen/common";
+
+message Sorting {
+  enum Direction {
+    DIRECTION_UNSPECIFIED = 0;
+    DIRECTION_ASC = 1;
+    DIRECTION_DESC = 2;
+  }
+
+  string field = 1 [(buf.validate.field).required = true];
+  Direction direction = 2;
+}

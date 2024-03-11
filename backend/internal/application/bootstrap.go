@@ -33,8 +33,9 @@ func WithServerListener(ln net.Listener) AppOption {
 }
 
 type App struct {
-	db *database.Database
+	ServiceContainer *ServiceContainer
 
+	db                 *database.Database
 	logger             *slog.Logger
 	httpServer         *server.Server
 	httpServerListener net.Listener
@@ -73,6 +74,7 @@ func Bootstrap(ctx context.Context, cfg *config.Config, opts ...AppOption) (*App
 
 	repoContainer := newRepositoryContainer(app.db.Handler)
 	serviceContainer := newServiceContainer(repoContainer)
+	app.ServiceContainer = serviceContainer
 
 	if app.httpServerListener == nil {
 		ln, err := net.Listen("tcp", cfg.Server.Addr())
@@ -81,11 +83,9 @@ func Bootstrap(ctx context.Context, cfg *config.Config, opts ...AppOption) (*App
 		}
 		app.httpServerListener = ln
 	}
+	app.httpServer = server.New(logger, app.httpServerListener, serviceContainer.PersonService)
 
-	return &App{
-		logger:     logger,
-		httpServer: server.New(logger, app.httpServerListener, serviceContainer.PersonService),
-	}, nil
+	return &app, nil
 }
 
 func (a *App) Run(ctx context.Context) error {

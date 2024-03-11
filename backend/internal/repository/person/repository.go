@@ -98,12 +98,17 @@ func (s *Storage) Filter(ctx context.Context, filter repository.ContactPersonFil
 		b = b.Where(sq.Like{"vk_id": filter.VKID})
 	}
 
-	b = b.OrderBy(filter.OrderBy.Field + " " + string(filter.OrderBy.Direction))
+	b = b.OrderBy(filter.Sorting.Field + " " + string(filter.Sorting.Direction))
 	if filter.Pagination.Limit > 0 {
-		b = b.Limit(filter.Pagination.Limit)
+		b = b.Limit(uint64(filter.Pagination.Limit))
 	}
-	if filter.Pagination.Offset > 0 {
-		b = b.Offset(filter.Pagination.Offset)
+	if filter.Pagination.LastID > 0 {
+		switch filter.Sorting.Direction {
+		case repository.OrderDirectionAsc:
+			b = b.Where(sq.Gt{"id": filter.Pagination.LastID})
+		case repository.OrderDirectionDesc:
+			b = b.Where(sq.Lt{"id": filter.Pagination.LastID})
+		}
 	}
 
 	return s.fetcher.Rows(
@@ -123,6 +128,8 @@ func scan(row database.Row, item *model) error {
 	return row.Scan(
 		&item.ID,
 		&item.Name,
+		&item.VKID,
 		&item.CreatedAt,
+		&item.UpdateAt,
 	)
 }
