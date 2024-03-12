@@ -77,6 +77,28 @@ func (s *Storage) Update(ctx context.Context, person *entity.ContactPerson) erro
 	return nil
 }
 
+func (s *Storage) Delete(ctx context.Context, person *entity.ContactPerson) error {
+	m := newModel(person)
+	now := time.Now().UTC()
+	m.DeletedAt = &now
+
+	query, args, err := s.sqlBuilder.
+		Update(tableName).
+		Set("deleted_at", m.DeletedAt).
+		Where(sq.Eq{"id": m.ID}).
+		ToSql()
+	if err != nil {
+		return fmt.Errorf("build query: %w", err)
+	}
+
+	if _, err := s.db.Exec(ctx, query, args...); err != nil {
+		return fmt.Errorf("execute query: %w", err)
+	}
+
+	return nil
+
+}
+
 func (s *Storage) Get(ctx context.Context, id uint64) (*entity.ContactPerson, error) {
 	return s.fetcher.Row(
 		ctx,

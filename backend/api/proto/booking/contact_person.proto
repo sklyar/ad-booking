@@ -5,12 +5,14 @@ package booking;
 import "buf/validate/validate.proto";
 import "common/pagination.proto";
 import "common/sorting.proto";
+import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/sklyar/ad-booking/backend/api/gen/booking";
 
 service ContactPersonService {
   rpc Create(CreatePersonRequest) returns (CreatePersonResponse);
+  rpc Delete(DeletePersonRequest) returns (google.protobuf.Empty);
   rpc Get(GetPersonRequest) returns (GetPersonResponse);
   rpc List(ListPersonRequest) returns (ListPersonResponse);
 }
@@ -22,6 +24,10 @@ message CreatePersonRequest {
 
 message CreatePersonResponse {
   ContactPerson contact_person = 1;
+}
+
+message DeletePersonRequest {
+  uint64 id = 1 [(buf.validate.field).required = true];
 }
 
 message GetPersonRequest {

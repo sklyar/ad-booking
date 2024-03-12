@@ -12,6 +12,7 @@ type model struct {
 	VKID      string
 	CreatedAt time.Time
 	UpdateAt  time.Time
+	DeletedAt *time.Time
 }
 
 func newModel(v *entity.ContactPerson) model {
@@ -21,6 +22,7 @@ func newModel(v *entity.ContactPerson) model {
 		VKID:      v.VKID,
 		CreatedAt: v.CreatedAt,
 		UpdateAt:  v.UpdatedAt,
+		DeletedAt: v.DeletedAt,
 	}
 }
 
@@ -31,5 +33,6 @@ func (m model) Convert() *entity.ContactPerson {
 		VKID:      m.VKID,
 		CreatedAt: m.CreatedAt,
 		UpdatedAt: m.UpdateAt,
+		DeletedAt: m.DeletedAt,
 	}
 }
