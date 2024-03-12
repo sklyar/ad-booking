@@ -8,7 +8,6 @@ import (
 	"github.com/sklyar/ad-booking/backend/api/gen/booking/bookingconnect"
 
 	"connectrpc.com/connect"
-	"github.com/sklyar/ad-booking/backend/internal/test"
 	"github.com/sklyar/ad-booking/backend/internal/test/apptest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -20,8 +19,10 @@ func TestHandler_Create(t *testing.T) {
 	ctx := context.Background()
 	suite := apptest.NewSuite(t, ctx)
 
-	req := new(booking.CreatePersonRequest)
-	test.ReadProtoFixture(t, "create/req.json", req)
+	req := &booking.CreatePersonRequest{
+		Name: "person-1",
+		VkId: "vk-id1",
+	}
 
 	client := apptest.NewGRPCClient(suite, bookingconnect.NewContactPersonServiceClient)
 	resp, err := client.Create(ctx, connect.NewRequest(req))
