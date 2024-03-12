@@ -33,11 +33,32 @@ func (s *Service) Create(ctx context.Context, data service.PersonCreate) (*entit
 	return person, nil
 }
 
+// Delete deletes a contact person by his id.
+// It returns the deleted contact person if found.
+// If the contact person is not found, an apperror.UnknownPerson error is returned.
+// Any other error should be considered as an internal error.
+func (s *Service) Delete(ctx context.Context, id uint64) (*entity.ContactPerson, error) {
+	person, err := s.Get(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("get person: %w", err)
+	}
+
+	if err := s.repo.Delete(ctx, person); err != nil {
+		return nil, fmt.Errorf("delete: %w", err)
+	}
+
+	return person, nil
+}
+
 // Get returns a contact person by id.
 func (s *Service) Get(ctx context.Context, id uint64) (*entity.ContactPerson, error) {
 	person, err := s.repo.Get(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("fetch person: %w", err)
+	}
+	if person == nil {
+		// TODO: Wrap error with a custom error type.
+		return nil, fmt.Errorf("person not found")
 	}
 
 	return person, nil
