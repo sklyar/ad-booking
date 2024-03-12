@@ -10,6 +10,7 @@ import (
 // Person is a contact person service.
 type Person interface {
 	Create(ctx context.Context, data PersonCreate) (*entity.ContactPerson, error)
+	Get(ctx context.Context, id uint64) (*entity.ContactPerson, error)
 	Filter(ctx context.Context, filter PersonFilter) ([]entity.ContactPerson, error)
 }
 

@@ -5,12 +5,13 @@
 package bookingconnect
 
 import (
-	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	booking "github.com/sklyar/ad-booking/backend/api/gen/booking"
 	http "net/http"
 	strings "strings"
+
+	connect "connectrpc.com/connect"
+	booking "github.com/sklyar/ad-booking/backend/api/gen/booking"
 )
 
 // This is a compile-time assertion to ensure that this generated file and the connect package are
@@ -36,6 +37,9 @@ const (
 	// ContactPersonServiceCreateProcedure is the fully-qualified name of the ContactPersonService's
 	// Create RPC.
 	ContactPersonServiceCreateProcedure = "/booking.ContactPersonService/Create"
+	// ContactPersonServiceGetProcedure is the fully-qualified name of the ContactPersonService's Get
+	// RPC.
+	ContactPersonServiceGetProcedure = "/booking.ContactPersonService/Get"
 	// ContactPersonServiceListProcedure is the fully-qualified name of the ContactPersonService's List
 	// RPC.
 	ContactPersonServiceListProcedure = "/booking.ContactPersonService/List"
@@ -45,12 +49,14 @@ const (
 var (
 	contactPersonServiceServiceDescriptor      = booking.File_booking_contact_person_proto.Services().ByName("ContactPersonService")
 	contactPersonServiceCreateMethodDescriptor = contactPersonServiceServiceDescriptor.Methods().ByName("Create")
+	contactPersonServiceGetMethodDescriptor    = contactPersonServiceServiceDescriptor.Methods().ByName("Get")
 	contactPersonServiceListMethodDescriptor   = contactPersonServiceServiceDescriptor.Methods().ByName("List")
 )
 
 // ContactPersonServiceClient is a client for the booking.ContactPersonService service.
 type ContactPersonServiceClient interface {
 	Create(context.Context, *connect.Request[booking.CreatePersonRequest]) (*connect.Response[booking.CreatePersonResponse], error)
+	Get(context.Context, *connect.Request[booking.GetPersonRequest]) (*connect.Response[booking.GetPersonResponse], error)
 	List(context.Context, *connect.Request[booking.ListPersonRequest]) (*connect.Response[booking.ListPersonResponse], error)
 }
 
@@ -70,6 +76,12 @@ func NewContactPersonServiceClient(httpClient connect.HTTPClient, baseURL string
 			connect.WithSchema(contactPersonServiceCreateMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		get: connect.NewClient[booking.GetPersonRequest, booking.GetPersonResponse](
+			httpClient,
+			baseURL+ContactPersonServiceGetProcedure,
+			connect.WithSchema(contactPersonServiceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 		list: connect.NewClient[booking.ListPersonRequest, booking.ListPersonResponse](
 			httpClient,
 			baseURL+ContactPersonServiceListProcedure,
@@ -82,12 +94,18 @@ func NewContactPersonServiceClient(httpClient connect.HTTPClient, baseURL string
 // contactPersonServiceClient implements ContactPersonServiceClient.
 type contactPersonServiceClient struct {
 	create *connect.Client[booking.CreatePersonRequest, booking.CreatePersonResponse]
+	get    *connect.Client[booking.GetPersonRequest, booking.GetPersonResponse]
 	list   *connect.Client[booking.ListPersonRequest, booking.ListPersonResponse]
 }
 
 // Create calls booking.ContactPersonService.Create.
 func (c *contactPersonServiceClient) Create(ctx context.Context, req *connect.Request[booking.CreatePersonRequest]) (*connect.Response[booking.CreatePersonResponse], error) {
 	return c.create.CallUnary(ctx, req)
+}
+
+// Get calls booking.ContactPersonService.Get.
+func (c *contactPersonServiceClient) Get(ctx context.Context, req *connect.Request[booking.GetPersonRequest]) (*connect.Response[booking.GetPersonResponse], error) {
+	return c.get.CallUnary(ctx, req)
 }
 
 // List calls booking.ContactPersonService.List.
@@ -98,6 +116,7 @@ func (c *contactPersonServiceClient) List(ctx context.Context, req *connect.Requ
 // ContactPersonServiceHandler is an implementation of the booking.ContactPersonService service.
 type ContactPersonServiceHandler interface {
 	Create(context.Context, *connect.Request[booking.CreatePersonRequest]) (*connect.Response[booking.CreatePersonResponse], error)
+	Get(context.Context, *connect.Request[booking.GetPersonRequest]) (*connect.Response[booking.GetPersonResponse], error)
 	List(context.Context, *connect.Request[booking.ListPersonRequest]) (*connect.Response[booking.ListPersonResponse], error)
 }
 
@@ -113,6 +132,12 @@ func NewContactPersonServiceHandler(svc ContactPersonServiceHandler, opts ...con
 		connect.WithSchema(contactPersonServiceCreateMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	contactPersonServiceGetHandler := connect.NewUnaryHandler(
+		ContactPersonServiceGetProcedure,
+		svc.Get,
+		connect.WithSchema(contactPersonServiceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	contactPersonServiceListHandler := connect.NewUnaryHandler(
 		ContactPersonServiceListProcedure,
 		svc.List,
@@ -123,6 +148,8 @@ func NewContactPersonServiceHandler(svc ContactPersonServiceHandler, opts ...con
 		switch r.URL.Path {
 		case ContactPersonServiceCreateProcedure:
 			contactPersonServiceCreateHandler.ServeHTTP(w, r)
+		case ContactPersonServiceGetProcedure:
+			contactPersonServiceGetHandler.ServeHTTP(w, r)
 		case ContactPersonServiceListProcedure:
 			contactPersonServiceListHandler.ServeHTTP(w, r)
 		default:
@@ -136,6 +163,10 @@ type UnimplementedContactPersonServiceHandler struct{}
 
 func (UnimplementedContactPersonServiceHandler) Create(context.Context, *connect.Request[booking.CreatePersonRequest]) (*connect.Response[booking.CreatePersonResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("booking.ContactPersonService.Create is not implemented"))
+}
+
+func (UnimplementedContactPersonServiceHandler) Get(context.Context, *connect.Request[booking.GetPersonRequest]) (*connect.Response[booking.GetPersonResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("booking.ContactPersonService.Get is not implemented"))
 }
 
 func (UnimplementedContactPersonServiceHandler) List(context.Context, *connect.Request[booking.ListPersonRequest]) (*connect.Response[booking.ListPersonResponse], error) {
