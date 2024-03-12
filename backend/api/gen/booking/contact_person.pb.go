@@ -7,13 +7,14 @@
 package booking
 
 import (
+	reflect "reflect"
+	sync "sync"
+
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	common "github.com/sklyar/ad-booking/backend/api/gen/common"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -125,6 +126,100 @@ func (x *CreatePersonResponse) GetContactPerson() *ContactPerson {
 	return nil
 }
 
+type GetPersonRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *GetPersonRequest) Reset() {
+	*x = GetPersonRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_booking_contact_person_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetPersonRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPersonRequest) ProtoMessage() {}
+
+func (x *GetPersonRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_booking_contact_person_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPersonRequest.ProtoReflect.Descriptor instead.
+func (*GetPersonRequest) Descriptor() ([]byte, []int) {
+	return file_booking_contact_person_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetPersonRequest) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type GetPersonResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ContactPerson *ContactPerson `protobuf:"bytes,1,opt,name=contact_person,json=contactPerson,proto3" json:"contact_person,omitempty"`
+}
+
+func (x *GetPersonResponse) Reset() {
+	*x = GetPersonResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_booking_contact_person_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetPersonResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPersonResponse) ProtoMessage() {}
+
+func (x *GetPersonResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_booking_contact_person_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPersonResponse.ProtoReflect.Descriptor instead.
+func (*GetPersonResponse) Descriptor() ([]byte, []int) {
+	return file_booking_contact_person_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetPersonResponse) GetContactPerson() *ContactPerson {
+	if x != nil {
+		return x.ContactPerson
+	}
+	return nil
+}
+
 type ListPersonRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -139,7 +234,7 @@ type ListPersonRequest struct {
 func (x *ListPersonRequest) Reset() {
 	*x = ListPersonRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_booking_contact_person_proto_msgTypes[2]
+		mi := &file_booking_contact_person_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -152,7 +247,7 @@ func (x *ListPersonRequest) String() string {
 func (*ListPersonRequest) ProtoMessage() {}
 
 func (x *ListPersonRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_booking_contact_person_proto_msgTypes[2]
+	mi := &file_booking_contact_person_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -165,7 +260,7 @@ func (x *ListPersonRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPersonRequest.ProtoReflect.Descriptor instead.
 func (*ListPersonRequest) Descriptor() ([]byte, []int) {
-	return file_booking_contact_person_proto_rawDescGZIP(), []int{2}
+	return file_booking_contact_person_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListPersonRequest) GetPagination() *common.Pagination {
@@ -207,7 +302,7 @@ type ListPersonResponse struct {
 func (x *ListPersonResponse) Reset() {
 	*x = ListPersonResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_booking_contact_person_proto_msgTypes[3]
+		mi := &file_booking_contact_person_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -220,7 +315,7 @@ func (x *ListPersonResponse) String() string {
 func (*ListPersonResponse) ProtoMessage() {}
 
 func (x *ListPersonResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_booking_contact_person_proto_msgTypes[3]
+	mi := &file_booking_contact_person_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -233,7 +328,7 @@ func (x *ListPersonResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPersonResponse.ProtoReflect.Descriptor instead.
 func (*ListPersonResponse) Descriptor() ([]byte, []int) {
-	return file_booking_contact_person_proto_rawDescGZIP(), []int{3}
+	return file_booking_contact_person_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListPersonResponse) GetData() []*ContactPerson {
@@ -258,7 +353,7 @@ type ContactPerson struct {
 func (x *ContactPerson) Reset() {
 	*x = ContactPerson{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_booking_contact_person_proto_msgTypes[4]
+		mi := &file_booking_contact_person_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -271,7 +366,7 @@ func (x *ContactPerson) String() string {
 func (*ContactPerson) ProtoMessage() {}
 
 func (x *ContactPerson) ProtoReflect() protoreflect.Message {
-	mi := &file_booking_contact_person_proto_msgTypes[4]
+	mi := &file_booking_contact_person_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -284,7 +379,7 @@ func (x *ContactPerson) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ContactPerson.ProtoReflect.Descriptor instead.
 func (*ContactPerson) Descriptor() ([]byte, []int) {
-	return file_booking_contact_person_proto_rawDescGZIP(), []int{4}
+	return file_booking_contact_person_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ContactPerson) GetId() uint64 {
@@ -344,6 +439,14 @@ var file_booking_contact_person_proto_rawDesc = []byte{
 	0x63, 0x6f, 0x6e, 0x74, 0x61, 0x63, 0x74, 0x5f, 0x70, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x67, 0x2e, 0x43,
 	0x6f, 0x6e, 0x74, 0x61, 0x63, 0x74, 0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x52, 0x0d, 0x63, 0x6f,
+	0x6e, 0x74, 0x61, 0x63, 0x74, 0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x22, 0x2a, 0x0a, 0x10, 0x47,
+	0x65, 0x74, 0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x16, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x42, 0x06, 0xba, 0x48, 0x03,
+	0xc8, 0x01, 0x01, 0x52, 0x02, 0x69, 0x64, 0x22, 0x52, 0x0a, 0x11, 0x47, 0x65, 0x74, 0x50, 0x65,
+	0x72, 0x73, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3d, 0x0a, 0x0e,
+	0x63, 0x6f, 0x6e, 0x74, 0x61, 0x63, 0x74, 0x5f, 0x70, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x67, 0x2e, 0x43,
+	0x6f, 0x6e, 0x74, 0x61, 0x63, 0x74, 0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x52, 0x0d, 0x63, 0x6f,
 	0x6e, 0x74, 0x61, 0x63, 0x74, 0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x22, 0xb8, 0x01, 0x0a, 0x11,
 	0x4c, 0x69, 0x73, 0x74, 0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
 	0x74, 0x12, 0x32, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18,
@@ -372,21 +475,25 @@ var file_booking_contact_person_proto_rawDesc = []byte{
 	0x0a, 0x0a, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x05, 0x20, 0x01,
 	0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x09,
-	0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x32, 0x9e, 0x01, 0x0a, 0x14, 0x43, 0x6f,
+	0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x32, 0xdc, 0x01, 0x0a, 0x14, 0x43, 0x6f,
 	0x6e, 0x74, 0x61, 0x63, 0x74, 0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69,
 	0x63, 0x65, 0x12, 0x45, 0x0a, 0x06, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x1c, 0x2e, 0x62,
 	0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x67, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x50, 0x65, 0x72,
 	0x73, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x62, 0x6f, 0x6f,
 	0x6b, 0x69, 0x6e, 0x67, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x50, 0x65, 0x72, 0x73, 0x6f,
-	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3f, 0x0a, 0x04, 0x4c, 0x69, 0x73,
-	0x74, 0x12, 0x1a, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x67, 0x2e, 0x4c, 0x69, 0x73, 0x74,
-	0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e,
-	0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x67, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x50, 0x65, 0x72, 0x73,
-	0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x36, 0x5a, 0x34, 0x67, 0x69,
-	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x6b, 0x6c, 0x79, 0x61, 0x72, 0x2f,
-	0x61, 0x64, 0x2d, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x67, 0x2f, 0x62, 0x61, 0x63, 0x6b, 0x65,
-	0x6e, 0x64, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x62, 0x6f, 0x6f, 0x6b, 0x69,
-	0x6e, 0x67, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3c, 0x0a, 0x03, 0x47, 0x65, 0x74,
+	0x12, 0x19, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x67, 0x2e, 0x47, 0x65, 0x74, 0x50, 0x65,
+	0x72, 0x73, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x62, 0x6f,
+	0x6f, 0x6b, 0x69, 0x6e, 0x67, 0x2e, 0x47, 0x65, 0x74, 0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3f, 0x0a, 0x04, 0x4c, 0x69, 0x73, 0x74, 0x12,
+	0x1a, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x67, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x50, 0x65,
+	0x72, 0x73, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x62, 0x6f,
+	0x6f, 0x6b, 0x69, 0x6e, 0x67, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x50, 0x65, 0x72, 0x73, 0x6f, 0x6e,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x36, 0x5a, 0x34, 0x67, 0x69, 0x74, 0x68,
+	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x6b, 0x6c, 0x79, 0x61, 0x72, 0x2f, 0x61, 0x64,
+	0x2d, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x67, 0x2f, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64,
+	0x2f, 0x61, 0x70, 0x69, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x62, 0x6f, 0x6f, 0x6b, 0x69, 0x6e, 0x67,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -401,33 +508,38 @@ func file_booking_contact_person_proto_rawDescGZIP() []byte {
 	return file_booking_contact_person_proto_rawDescData
 }
 
-var file_booking_contact_person_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_booking_contact_person_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_booking_contact_person_proto_goTypes = []interface{}{
 	(*CreatePersonRequest)(nil),   // 0: booking.CreatePersonRequest
 	(*CreatePersonResponse)(nil),  // 1: booking.CreatePersonResponse
-	(*ListPersonRequest)(nil),     // 2: booking.ListPersonRequest
-	(*ListPersonResponse)(nil),    // 3: booking.ListPersonResponse
-	(*ContactPerson)(nil),         // 4: booking.ContactPerson
-	(*common.Pagination)(nil),     // 5: common.Pagination
-	(*common.Sorting)(nil),        // 6: common.Sorting
-	(*timestamppb.Timestamp)(nil), // 7: google.protobuf.Timestamp
+	(*GetPersonRequest)(nil),      // 2: booking.GetPersonRequest
+	(*GetPersonResponse)(nil),     // 3: booking.GetPersonResponse
+	(*ListPersonRequest)(nil),     // 4: booking.ListPersonRequest
+	(*ListPersonResponse)(nil),    // 5: booking.ListPersonResponse
+	(*ContactPerson)(nil),         // 6: booking.ContactPerson
+	(*common.Pagination)(nil),     // 7: common.Pagination
+	(*common.Sorting)(nil),        // 8: common.Sorting
+	(*timestamppb.Timestamp)(nil), // 9: google.protobuf.Timestamp
 }
 var file_booking_contact_person_proto_depIdxs = []int32{
-	4, // 0: booking.CreatePersonResponse.contact_person:type_name -> booking.ContactPerson
-	5, // 1: booking.ListPersonRequest.pagination:type_name -> common.Pagination
-	6, // 2: booking.ListPersonRequest.sorting:type_name -> common.Sorting
-	4, // 3: booking.ListPersonResponse.data:type_name -> booking.ContactPerson
-	7, // 4: booking.ContactPerson.created_at:type_name -> google.protobuf.Timestamp
-	7, // 5: booking.ContactPerson.updated_at:type_name -> google.protobuf.Timestamp
-	0, // 6: booking.ContactPersonService.Create:input_type -> booking.CreatePersonRequest
-	2, // 7: booking.ContactPersonService.List:input_type -> booking.ListPersonRequest
-	1, // 8: booking.ContactPersonService.Create:output_type -> booking.CreatePersonResponse
-	3, // 9: booking.ContactPersonService.List:output_type -> booking.ListPersonResponse
-	8, // [8:10] is the sub-list for method output_type
-	6, // [6:8] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	6,  // 0: booking.CreatePersonResponse.contact_person:type_name -> booking.ContactPerson
+	6,  // 1: booking.GetPersonResponse.contact_person:type_name -> booking.ContactPerson
+	7,  // 2: booking.ListPersonRequest.pagination:type_name -> common.Pagination
+	8,  // 3: booking.ListPersonRequest.sorting:type_name -> common.Sorting
+	6,  // 4: booking.ListPersonResponse.data:type_name -> booking.ContactPerson
+	9,  // 5: booking.ContactPerson.created_at:type_name -> google.protobuf.Timestamp
+	9,  // 6: booking.ContactPerson.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 7: booking.ContactPersonService.Create:input_type -> booking.CreatePersonRequest
+	2,  // 8: booking.ContactPersonService.Get:input_type -> booking.GetPersonRequest
+	4,  // 9: booking.ContactPersonService.List:input_type -> booking.ListPersonRequest
+	1,  // 10: booking.ContactPersonService.Create:output_type -> booking.CreatePersonResponse
+	3,  // 11: booking.ContactPersonService.Get:output_type -> booking.GetPersonResponse
+	5,  // 12: booking.ContactPersonService.List:output_type -> booking.ListPersonResponse
+	10, // [10:13] is the sub-list for method output_type
+	7,  // [7:10] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_booking_contact_person_proto_init() }
@@ -461,7 +573,7 @@ func file_booking_contact_person_proto_init() {
 			}
 		}
 		file_booking_contact_person_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListPersonRequest); i {
+			switch v := v.(*GetPersonRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -473,7 +585,7 @@ func file_booking_contact_person_proto_init() {
 			}
 		}
 		file_booking_contact_person_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListPersonResponse); i {
+			switch v := v.(*GetPersonResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -485,6 +597,30 @@ func file_booking_contact_person_proto_init() {
 			}
 		}
 		file_booking_contact_person_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListPersonRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_booking_contact_person_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListPersonResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_booking_contact_person_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ContactPerson); i {
 			case 0:
 				return &v.state
@@ -497,14 +633,14 @@ func file_booking_contact_person_proto_init() {
 			}
 		}
 	}
-	file_booking_contact_person_proto_msgTypes[2].OneofWrappers = []interface{}{}
+	file_booking_contact_person_proto_msgTypes[4].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_booking_contact_person_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -11,6 +11,7 @@ option go_package = "github.com/sklyar/ad-booking/backend/api/gen/booking";
 
 service ContactPersonService {
   rpc Create(CreatePersonRequest) returns (CreatePersonResponse);
+  rpc Get(GetPersonRequest) returns (GetPersonResponse);
   rpc List(ListPersonRequest) returns (ListPersonResponse);
 }
 
@@ -20,6 +21,14 @@ message CreatePersonRequest {
 }
 
 message CreatePersonResponse {
+  ContactPerson contact_person = 1;
+}
+
+message GetPersonRequest {
+  uint64 id = 1 [(buf.validate.field).required = true];
+}
+
+message GetPersonResponse {
   ContactPerson contact_person = 1;
 }
 

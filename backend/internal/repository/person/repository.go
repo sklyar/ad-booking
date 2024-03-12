@@ -34,7 +34,7 @@ func New(dbHandler database.Handler) *Storage {
 
 func (s *Storage) Create(ctx context.Context, person *entity.ContactPerson) error {
 	m := newModel(person)
-	m.CreatedAt = time.Now()
+	m.CreatedAt = time.Now().UTC()
 	m.UpdateAt = m.CreatedAt
 
 	query, args, err := s.sqlBuilder.

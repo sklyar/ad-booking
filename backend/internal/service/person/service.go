@@ -33,6 +33,16 @@ func (s *Service) Create(ctx context.Context, data service.PersonCreate) (*entit
 	return person, nil
 }
 
+// Get returns a contact person by id.
+func (s *Service) Get(ctx context.Context, id uint64) (*entity.ContactPerson, error) {
+	person, err := s.repo.Get(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("fetch person: %w", err)
+	}
+
+	return person, nil
+}
+
 func (s *Service) Filter(ctx context.Context, filter service.PersonFilter) ([]entity.ContactPerson, error) {
 	if err := filter.Validate(); err != nil {
 		return nil, fmt.Errorf("validate filter: %w", err)
