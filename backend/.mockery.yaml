@@ -1,0 +1,18 @@
+with-expecter: true
+packages:
+  github.com/sklyar/ad-booking/backend/internal/service:
+    config:
+      all: true
+      recursive: false
+      dir: internal/test/mock
+      outpkg: mock
+      filename: service.go
+      mockname: "{{.InterfaceName}}Service"
+  github.com/sklyar/ad-booking/backend/internal/repository:
+    config:
+      all: true
+      recursive: false
+      dir: internal/test/mock
+      outpkg: mock
+      filename: repository.go
+      mockname: "{{.InterfaceName}}Repository"

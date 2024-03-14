@@ -10,6 +10,7 @@ import (
 // ContactPerson is an interface for contact person repository.
 type ContactPerson interface {
 	Create(ctx context.Context, person *entity.ContactPerson) error
+	Update(ctx context.Context, person *entity.ContactPerson) error
 	Delete(ctx context.Context, person *entity.ContactPerson) error
 	Get(ctx context.Context, id uint64) (*entity.ContactPerson, error)
 	Filter(ctx context.Context, filter ContactPersonFilter) ([]entity.ContactPerson, error)

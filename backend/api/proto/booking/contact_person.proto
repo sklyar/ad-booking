@@ -12,6 +12,7 @@ option go_package = "github.com/sklyar/ad-booking/backend/api/gen/booking";
 
 service ContactPersonService {
   rpc Create(CreatePersonRequest) returns (CreatePersonResponse);
+  rpc Update(UpdatePersonRequest) returns (UpdatePersonResponse);
   rpc Delete(DeletePersonRequest) returns (google.protobuf.Empty);
   rpc Get(GetPersonRequest) returns (GetPersonResponse);
   rpc List(ListPersonRequest) returns (ListPersonResponse);
@@ -23,6 +24,16 @@ message CreatePersonRequest {
 }
 
 message CreatePersonResponse {
+  ContactPerson contact_person = 1;
+}
+
+message UpdatePersonRequest {
+  uint64 id = 1 [(buf.validate.field).required = true];
+  optional string name = 2;
+  optional string vk_id = 3;
+}
+
+message UpdatePersonResponse {
   ContactPerson contact_person = 1;
 }
 

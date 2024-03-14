@@ -13,6 +13,12 @@ type Person interface {
 	// Any error should be considered as an internal error.
 	Create(ctx context.Context, data PersonCreate) (*entity.ContactPerson, error)
 
+	// Update updates a contact person.
+	// It returns the updated contact person if found.
+	// If the contact person is not found, an apperror.UnknownPerson error is returned.
+	// Any other error should be considered as an internal error.
+	Update(ctx context.Context, data PersonUpdate) (*entity.ContactPerson, error)
+
 	// Delete deletes a contact person by his id.
 	// It returns the deleted contact person if found.
 	// If the contact person is not found, an apperror.UnknownPerson error is returned.
@@ -33,6 +39,14 @@ type Person interface {
 type PersonCreate struct {
 	Name string
 	VKID string
+}
+
+// PersonUpdate is a dto for updating a contact person.
+type PersonUpdate struct {
+	ID uint64
+
+	Name *string
+	VKID *string
 }
 
 // PersonFilter is a dto for filtering contact persons.

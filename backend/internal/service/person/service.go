@@ -14,6 +14,8 @@ type Service struct {
 	repo repository.ContactPerson
 }
 
+var _ service.Person = (*Service)(nil)
+
 // New creates a new contact person service.
 func New(repo repository.ContactPerson) *Service {
 	return &Service{repo: repo}
@@ -28,6 +30,36 @@ func (s *Service) Create(ctx context.Context, data service.PersonCreate) (*entit
 
 	if err := s.repo.Create(ctx, person); err != nil {
 		return nil, fmt.Errorf("create: %w", err)
+	}
+
+	return person, nil
+}
+
+// Update updates a contact person.
+// It returns the updated contact person if found.
+// If the contact person is not found, an apperror.UnknownPerson error is returned.
+// Any other error should be considered as an internal error.
+func (s *Service) Update(ctx context.Context, data service.PersonUpdate) (*entity.ContactPerson, error) {
+	person, err := s.Get(ctx, data.ID)
+	if err != nil {
+		return nil, fmt.Errorf("get person: %w", err)
+	}
+
+	var updated bool
+	if data.Name != nil && *data.Name != person.Name {
+		person.Name = *data.Name
+		updated = true
+	}
+	if data.VKID != nil && *data.VKID != person.VKID {
+		person.VKID = *data.VKID
+		updated = true
+	}
+	if !updated {
+		return person, nil
+	}
+
+	if err := s.repo.Update(ctx, person); err != nil {
+		return nil, fmt.Errorf("update: %w", err)
 	}
 
 	return person, nil
@@ -64,6 +96,8 @@ func (s *Service) Get(ctx context.Context, id uint64) (*entity.ContactPerson, er
 	return person, nil
 }
 
+// Filter returns a list of contact persons that match the filter.
+// Any error should be considered as an internal error.
 func (s *Service) Filter(ctx context.Context, filter service.PersonFilter) ([]entity.ContactPerson, error) {
 	if err := filter.Validate(); err != nil {
 		return nil, fmt.Errorf("validate filter: %w", err)
