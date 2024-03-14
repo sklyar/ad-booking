@@ -5,14 +5,13 @@
 package bookingconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	http "net/http"
-	strings "strings"
-
-	connect "connectrpc.com/connect"
 	booking "github.com/sklyar/ad-booking/backend/api/gen/booking"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	http "net/http"
+	strings "strings"
 )
 
 // This is a compile-time assertion to ensure that this generated file and the connect package are
@@ -38,6 +37,9 @@ const (
 	// ContactPersonServiceCreateProcedure is the fully-qualified name of the ContactPersonService's
 	// Create RPC.
 	ContactPersonServiceCreateProcedure = "/booking.ContactPersonService/Create"
+	// ContactPersonServiceUpdateProcedure is the fully-qualified name of the ContactPersonService's
+	// Update RPC.
+	ContactPersonServiceUpdateProcedure = "/booking.ContactPersonService/Update"
 	// ContactPersonServiceDeleteProcedure is the fully-qualified name of the ContactPersonService's
 	// Delete RPC.
 	ContactPersonServiceDeleteProcedure = "/booking.ContactPersonService/Delete"
@@ -53,6 +55,7 @@ const (
 var (
 	contactPersonServiceServiceDescriptor      = booking.File_booking_contact_person_proto.Services().ByName("ContactPersonService")
 	contactPersonServiceCreateMethodDescriptor = contactPersonServiceServiceDescriptor.Methods().ByName("Create")
+	contactPersonServiceUpdateMethodDescriptor = contactPersonServiceServiceDescriptor.Methods().ByName("Update")
 	contactPersonServiceDeleteMethodDescriptor = contactPersonServiceServiceDescriptor.Methods().ByName("Delete")
 	contactPersonServiceGetMethodDescriptor    = contactPersonServiceServiceDescriptor.Methods().ByName("Get")
 	contactPersonServiceListMethodDescriptor   = contactPersonServiceServiceDescriptor.Methods().ByName("List")
@@ -61,6 +64,7 @@ var (
 // ContactPersonServiceClient is a client for the booking.ContactPersonService service.
 type ContactPersonServiceClient interface {
 	Create(context.Context, *connect.Request[booking.CreatePersonRequest]) (*connect.Response[booking.CreatePersonResponse], error)
+	Update(context.Context, *connect.Request[booking.UpdatePersonRequest]) (*connect.Response[booking.UpdatePersonResponse], error)
 	Delete(context.Context, *connect.Request[booking.DeletePersonRequest]) (*connect.Response[emptypb.Empty], error)
 	Get(context.Context, *connect.Request[booking.GetPersonRequest]) (*connect.Response[booking.GetPersonResponse], error)
 	List(context.Context, *connect.Request[booking.ListPersonRequest]) (*connect.Response[booking.ListPersonResponse], error)
@@ -80,6 +84,12 @@ func NewContactPersonServiceClient(httpClient connect.HTTPClient, baseURL string
 			httpClient,
 			baseURL+ContactPersonServiceCreateProcedure,
 			connect.WithSchema(contactPersonServiceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		update: connect.NewClient[booking.UpdatePersonRequest, booking.UpdatePersonResponse](
+			httpClient,
+			baseURL+ContactPersonServiceUpdateProcedure,
+			connect.WithSchema(contactPersonServiceUpdateMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
 		delete: connect.NewClient[booking.DeletePersonRequest, emptypb.Empty](
@@ -106,6 +116,7 @@ func NewContactPersonServiceClient(httpClient connect.HTTPClient, baseURL string
 // contactPersonServiceClient implements ContactPersonServiceClient.
 type contactPersonServiceClient struct {
 	create *connect.Client[booking.CreatePersonRequest, booking.CreatePersonResponse]
+	update *connect.Client[booking.UpdatePersonRequest, booking.UpdatePersonResponse]
 	delete *connect.Client[booking.DeletePersonRequest, emptypb.Empty]
 	get    *connect.Client[booking.GetPersonRequest, booking.GetPersonResponse]
 	list   *connect.Client[booking.ListPersonRequest, booking.ListPersonResponse]
@@ -114,6 +125,11 @@ type contactPersonServiceClient struct {
 // Create calls booking.ContactPersonService.Create.
 func (c *contactPersonServiceClient) Create(ctx context.Context, req *connect.Request[booking.CreatePersonRequest]) (*connect.Response[booking.CreatePersonResponse], error) {
 	return c.create.CallUnary(ctx, req)
+}
+
+// Update calls booking.ContactPersonService.Update.
+func (c *contactPersonServiceClient) Update(ctx context.Context, req *connect.Request[booking.UpdatePersonRequest]) (*connect.Response[booking.UpdatePersonResponse], error) {
+	return c.update.CallUnary(ctx, req)
 }
 
 // Delete calls booking.ContactPersonService.Delete.
@@ -134,6 +150,7 @@ func (c *contactPersonServiceClient) List(ctx context.Context, req *connect.Requ
 // ContactPersonServiceHandler is an implementation of the booking.ContactPersonService service.
 type ContactPersonServiceHandler interface {
 	Create(context.Context, *connect.Request[booking.CreatePersonRequest]) (*connect.Response[booking.CreatePersonResponse], error)
+	Update(context.Context, *connect.Request[booking.UpdatePersonRequest]) (*connect.Response[booking.UpdatePersonResponse], error)
 	Delete(context.Context, *connect.Request[booking.DeletePersonRequest]) (*connect.Response[emptypb.Empty], error)
 	Get(context.Context, *connect.Request[booking.GetPersonRequest]) (*connect.Response[booking.GetPersonResponse], error)
 	List(context.Context, *connect.Request[booking.ListPersonRequest]) (*connect.Response[booking.ListPersonResponse], error)
@@ -149,6 +166,12 @@ func NewContactPersonServiceHandler(svc ContactPersonServiceHandler, opts ...con
 		ContactPersonServiceCreateProcedure,
 		svc.Create,
 		connect.WithSchema(contactPersonServiceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	contactPersonServiceUpdateHandler := connect.NewUnaryHandler(
+		ContactPersonServiceUpdateProcedure,
+		svc.Update,
+		connect.WithSchema(contactPersonServiceUpdateMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
 	contactPersonServiceDeleteHandler := connect.NewUnaryHandler(
@@ -173,6 +196,8 @@ func NewContactPersonServiceHandler(svc ContactPersonServiceHandler, opts ...con
 		switch r.URL.Path {
 		case ContactPersonServiceCreateProcedure:
 			contactPersonServiceCreateHandler.ServeHTTP(w, r)
+		case ContactPersonServiceUpdateProcedure:
+			contactPersonServiceUpdateHandler.ServeHTTP(w, r)
 		case ContactPersonServiceDeleteProcedure:
 			contactPersonServiceDeleteHandler.ServeHTTP(w, r)
 		case ContactPersonServiceGetProcedure:
@@ -190,6 +215,10 @@ type UnimplementedContactPersonServiceHandler struct{}
 
 func (UnimplementedContactPersonServiceHandler) Create(context.Context, *connect.Request[booking.CreatePersonRequest]) (*connect.Response[booking.CreatePersonResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("booking.ContactPersonService.Create is not implemented"))
+}
+
+func (UnimplementedContactPersonServiceHandler) Update(context.Context, *connect.Request[booking.UpdatePersonRequest]) (*connect.Response[booking.UpdatePersonResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("booking.ContactPersonService.Update is not implemented"))
 }
 
 func (UnimplementedContactPersonServiceHandler) Delete(context.Context, *connect.Request[booking.DeletePersonRequest]) (*connect.Response[emptypb.Empty], error) {

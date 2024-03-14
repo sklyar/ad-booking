@@ -4,9 +4,11 @@ DEV_DB_URL = "postgres://dev_user:dev_password@localhost:15000/booking?sslmode=d
 TEST_DB_URL = "postgres://test_user:test_password@localhost:16000/template?sslmode=disable"
 MIGRATION_DIR = migrations
 
-generate:
+generate: deps
 	$(call print-target)
 	@buf generate
+	@mockery
+
 
 lint: deps
 	$(call print-target)
@@ -17,6 +19,7 @@ lint: deps
 deps:
 	$(call print-target)
 	@go install golang.org/x/tools/cmd/goimports@latest
+	@go install github.com/vektra/mockery/v2@v2.42.1
 
 test: test-env-up
 	$(call print-target)
